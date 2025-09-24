@@ -51,7 +51,7 @@ export default function Page() {
           preloaded.current[i] = img;
           loadedCount++;
 
-          if (!firstImageLoaded && i === 0) setFirstImageLoaded(true); // first image ready
+          if (!firstImageLoaded && i === 0) setFirstImageLoaded(true); 
           if (loadedCount === images.length) setAllLoaded(true);
 
           // If this chunk finished, load next chunk
@@ -62,7 +62,7 @@ export default function Page() {
       }
     };
 
-    loadChunk(0); // start first chunk
+    loadChunk(0); 
   }, []);
 
   const handleClick = () => setCurrentIndex((ci) => (ci + 1) % images.length);
@@ -127,7 +127,7 @@ export default function Page() {
 
         <p className="mt-3 text-sm uppercase font-normal tracking-wide underline">
           <a
-            href="https://g.page/r/CT1AW9Jeu5g6EAE/review"
+            href="https://maps.app.goo.gl/QC5RTtDmp7W8FnsP7"
             className="text-black"
             style={{ textDecoration: "underline" }}
           >
