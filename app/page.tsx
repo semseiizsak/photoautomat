@@ -39,108 +39,106 @@ export default function Page() {
   const preloaded = useRef<HTMLImageElement[]>([]);
 
   useEffect(() => {
+    const chunkSize = 4;
     let loadedCount = 0;
-    images.forEach((src, i) => {
-      const img = new window.Image();
-      img.src = src;
-      img.onload = () => {
-        preloaded.current[i] = img;
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setAllLoaded(true);
-          setFirstImageLoaded(true);
-        }
-      };
-    });
+
+    const loadChunk = (start: number) => {
+      const end = Math.min(start + chunkSize, images.length);
+      for (let i = start; i < end; i++) {
+        const img = new window.Image();
+        img.src = images[i];
+        img.onload = () => {
+          preloaded.current[i] = img;
+          loadedCount++;
+
+          if (!firstImageLoaded && i === 0) setFirstImageLoaded(true); // first image ready
+          if (loadedCount === images.length) setAllLoaded(true);
+
+          // If this chunk finished, load next chunk
+          if ((i + 1 - start) === end - start) {
+            if (end < images.length) loadChunk(end);
+          }
+        };
+      }
+    };
+
+    loadChunk(0); // start first chunk
   }, []);
 
   const handleClick = () => setCurrentIndex((ci) => (ci + 1) % images.length);
 
   return (
-    <>
-      {/* fixed full-viewport shell — keeps everything perfectly centered and prevents page scroll from moving the image */}
-      <main
-        className="fixed inset-0 flex items-center justify-center bg-white text-center p-3 box-border"
-        style={{ fontFamily: "Benzin, sans-serif", WebkitFontSmoothing: "antialiased" }}
-      >
-        {/* Title: clamp() keeps it small on phones, big on desktop. letterSpacing also clamped. */}
-        <div className="w-full flex flex-col items-center">
-          <h1
-            className="mb-4"
-            style={{
-              fontSize: "clamp(25px, 7vw, 42px)", // scales smoothly
-              fontWeight: 800,
-              lineHeight: 1.02,
-              maxWidth: "100vw",
-              letterSpacing: "clamp(0.2px, 1vw, 2.5px)",
-              margin: 0,
-              wordBreak: "break-word",
-            }}
+    <main className="fixed inset-0 flex items-center justify-center bg-white text-center p-3 box-border" style={{ fontFamily: "Benzin, sans-serif", WebkitFontSmoothing: "antialiased" }}>
+      <div className="w-full flex flex-col items-center">
+        <h1
+          className="mb-4"
+          style={{
+            fontSize: "clamp(25px, 7vw, 42px)",
+            fontWeight: 800,
+            lineHeight: 1.02,
+            maxWidth: "100vw",
+            letterSpacing: "clamp(0.2px, 1vw, 2.5px)",
+            margin: 0,
+            wordBreak: "break-word",
+          }}
+        >
+          PHOTOAUTOMAT
+        </h1>
+
+        <div className="w-full max-w-[400px] p-[10px] m-6 sm:p-0">
+          <div
+            className="relative w-full aspect-square overflow-hidden mx-auto cursor-pointer"
+            onClick={handleClick}
+            style={{ maxHeight: "calc(100vh - 120px)" }}
           >
-            PHOTOAUTOMAT
-          </h1>
+            {!firstImageLoaded && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center">
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "9999px",
+                    border: "4px solid rgba(0,0,0,0.1)",
+                    borderTop: "4px solid black",
+                    animation: "spin 1s linear infinite",
+                  }}
+                />
+              </div>
+            )}
 
-          {/* Outer padding container: gives exact 10px inner padding on small screens, removed on sm+ */}
-          <div className="w-full max-w-[400px] p-[10px] m-6 sm:p-0">
-            <div
-              className="relative w-full aspect-square overflow-hidden mx-auto cursor-pointer"
-              onClick={handleClick}
-              // keep the inside from ever exceeding viewport height
-              style={{ maxHeight: "calc(100vh - 120px)" }}
-            >
-              {/* Loader centered */}
-              {!firstImageLoaded && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center">
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "9999px",
-                      border: "4px solid rgba(0,0,0,0.1)",
-                      borderTop: "4px solid black",
-                      animation: "spin 1s linear infinite",
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Images: only render after fully preloaded to avoid jumps */}
-              {allLoaded &&
-                images.map((src, i) => {
-                  const isCurrent = i === currentIndex;
-                  return (
-                    <Image
-                      key={i}
-                      src={src}
-                      alt={`Photoautomat ${i + 1}`}
-                      fill
-                      priority={i === 0}
-                      style={{
-                        objectFit: "cover",
-                        opacity: isCurrent ? 1 : 0,
-                        transition: "opacity 300ms ease-in-out",
-                      }}
-                    />
-                  );
-                })}
-            </div>
+            {preloaded.current.map((img, i) => {
+              const isCurrent = i === currentIndex;
+              return (
+                <Image
+                  key={i}
+                  src={img.src}
+                  alt={`Photoautomat ${i + 1}`}
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    opacity: isCurrent ? 1 : 0,
+                    transition: "opacity 300ms ease-in-out",
+                  }}
+                />
+              );
+            })}
           </div>
-
-          <p className="mt-3 text-sm uppercase font-normal tracking-wide underline">
-            <a
-              href="https://g.page/r/CT1AW9Jeu5g6EAE/review"
-              className="text-black"
-              style={{ textDecoration: "underline" }}
-            >
-              BUDAPEST, KAZINCZY U. 7, 1075
-            </a>
-          </p>
         </div>
 
-        <style>{`
-          @keyframes spin {0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-        `}</style>
-      </main>
-    </>
+        <p className="mt-3 text-sm uppercase font-normal tracking-wide underline">
+          <a
+            href="https://g.page/r/CT1AW9Jeu5g6EAE/review"
+            className="text-black"
+            style={{ textDecoration: "underline" }}
+          >
+            BUDAPEST, KAZINCZY U. 7, 1075
+          </a>
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes spin {0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+      `}</style>
+    </main>
   );
 }
