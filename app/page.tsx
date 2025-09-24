@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-
-
 const images = [
   "https://static.wixstatic.com/media/65e3c0_30a9fc7d9e1b4f6287cee1070bb925ee~mv2.jpg",
   "https://static.wixstatic.com/media/65e3c0_d613a719d9a742ed9279915f4c31073a~mv2.jpg",
@@ -37,15 +35,24 @@ const images = [
 export default function Page() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [firstImageLoaded, setFirstImageLoaded] = useState(false);
+  const [allLoaded, setAllLoaded] = useState(false);
 
   const preloaded = useRef<HTMLImageElement[]>([]);
 
   // Preload all images once
   useEffect(() => {
+    let loadedCount = 0;
     images.forEach((src, i) => {
-      const img = document.createElement("img");
+      const img = new window.Image();
       img.src = src;
-      img.onload = () => (preloaded.current[i] = img);
+      img.onload = () => {
+        preloaded.current[i] = img;
+        loadedCount++;
+        if (loadedCount === images.length) {
+          setAllLoaded(true);
+          setFirstImageLoaded(true); // ✅ hide loader
+        }
+      };
     });
   }, []);
 
@@ -86,10 +93,7 @@ export default function Page() {
 
         {images.map((src, i) => {
           const isCurrent = i === currentIndex;
-          const isPrev =
-            i === (currentIndex === 0 ? images.length - 1 : currentIndex - 1);
-          if (!isCurrent && !isPrev) return null;
-
+          if (!allLoaded) return null; // don’t show until all images preloaded
           return (
             <Image
               key={i}
@@ -102,7 +106,6 @@ export default function Page() {
                 transition: "opacity 500ms ease-in-out",
                 position: "absolute",
               }}
-              onLoad={() => setFirstImageLoaded(true)}
             />
           );
         })}
