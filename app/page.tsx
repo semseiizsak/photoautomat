@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+
+
 const images = [
   "https://static.wixstatic.com/media/65e3c0_30a9fc7d9e1b4f6287cee1070bb925ee~mv2.jpg",
   "https://static.wixstatic.com/media/65e3c0_d613a719d9a742ed9279915f4c31073a~mv2.jpg",
