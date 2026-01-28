@@ -15,6 +15,25 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "PHOTOAUTOMAT",
   description: "Romantic photo booth in the heart of Budapest.",
+  icons: {
+    icon: "/IMG_4252.JPEG",
+    apple: "/IMG_4252.JPEG",
+  },
+  openGraph: {
+    title: "PHOTOAUTOMAT",
+    description: "Romantic photo booth in the heart of Budapest.",
+    images: [
+      {
+        url: "/IMG_4252.JPEG",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PHOTOAUTOMAT",
+    description: "Romantic photo booth in the heart of Budapest.",
+    images: ["/IMG_4252.JPEG"],
+  },
 };
 
 export default function RootLayout({
