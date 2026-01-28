@@ -51,24 +51,30 @@ export default function Page() {
           preloaded.current[i] = img;
           loadedCount++;
 
-          if (!firstImageLoaded && i === 0) setFirstImageLoaded(true); 
+          if (!firstImageLoaded && i === 0) setFirstImageLoaded(true);
           if (loadedCount === images.length) setAllLoaded(true);
 
           // If this chunk finished, load next chunk
-          if ((i + 1 - start) === end - start) {
+          if (i + 1 - start === end - start) {
             if (end < images.length) loadChunk(end);
           }
         };
       }
     };
 
-    loadChunk(0); 
+    loadChunk(0);
   }, []);
 
   const handleClick = () => setCurrentIndex((ci) => (ci + 1) % images.length);
 
   return (
-    <main className="fixed inset-0 flex items-center justify-center bg-white text-center p-3 box-border" style={{ fontFamily: "Benzin, sans-serif", WebkitFontSmoothing: "antialiased" }}>
+    <main
+      className="fixed inset-0 flex items-center justify-center bg-white text-center p-3 box-border"
+      style={{
+        fontFamily: "Benzin, sans-serif",
+        WebkitFontSmoothing: "antialiased",
+      }}
+    >
       <div className="w-full flex flex-col items-center">
         <h1
           className="mb-4"
@@ -137,10 +143,18 @@ export default function Page() {
       </div>
 
       <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 text-[10px] uppercase tracking-widest">
-        <a href="mailto:info@photoautomat.hu" className="underline text-black text-[#bcbcbc]">
+        <a
+          href="mailto:info@photoautomat.hu"
+          className="underline text-black text-[#bcbcbc]"
+          style={{ color: "#bcbcbc;" }}
+        >
           MAIL
         </a>
-        <a href="https://wa.me/36703361957" className="underline text-black text-[#bcbcbc]">
+        <a
+          href="https://wa.me/36703361957"
+          className="underline text-black text-[#bcbcbc]"
+          style={{ color: "#bcbcbc;" }}
+        >
           WHATSAPP
         </a>
       </div>
