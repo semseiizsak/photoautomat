@@ -136,6 +136,15 @@ export default function Page() {
         </p>
       </div>
 
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 text-xs uppercase tracking-widest">
+        <a href="mailto:info@photoautomat.hu" className="underline text-black">
+          MAIL
+        </a>
+        <a href="https://wa.me/36703361957" className="underline text-black">
+          WHATSAPP
+        </a>
+      </div>
+
       <style>{`
         @keyframes spin {0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
       `}</style>
