@@ -136,11 +136,11 @@ export default function Page() {
         </p>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 text-xs uppercase tracking-widest">
-        <a href="mailto:info@photoautomat.hu" className="underline text-black">
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 text-[10px] uppercase tracking-widest">
+        <a href="mailto:info@photoautomat.hu" className="underline text-black text-[#bcbcbc]">
           MAIL
         </a>
-        <a href="https://wa.me/36703361957" className="underline text-black">
+        <a href="https://wa.me/36703361957" className="underline text-black text-[#bcbcbc]">
           WHATSAPP
         </a>
       </div>
