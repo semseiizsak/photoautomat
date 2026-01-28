@@ -12,11 +12,7 @@
     "basic-auth": "^2.0.1",
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
-<<<<<<< HEAD
-    "next": "15.5.6",
-=======
     "next": "15.5.9",
->>>>>>> 690e93a644875891f781d1ded278fec7d2616805
     "nodemailer": "^7.0.6",
     "pg": "^8.16.3",
     "react": "19.1.0",
@@ -30,11 +26,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.5.6",
+    "eslint-config-next": "15.5.9",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "<<<<<<< HEAD # photoautomat ======= This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "description": "photoautomat",
   "main": "index.js",
   "repository": {
     "type": "git",
